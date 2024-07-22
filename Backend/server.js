@@ -42,10 +42,8 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log('Error connecting to MongoDB:', err));
 
-// Serve static files from the 'build' directory
 app.use(express.static(path.join(__dirname, 'build')));
 
-// API routes
 app.post('/submit', submitHandler);
 app.post('/login', loginHandler);
 app.post('/logout', logoutHandler);
@@ -55,12 +53,10 @@ app.get('/home', verifyUser, homeHandler);
 app.post('/apply', verifyUser, applyHandler);
 app.get('/applied', verifyUser, getAppliedHandler);
 
-// Serve the React app for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Error handling for unhandled routes
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route not found' });
 });
